@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAK Lens — video intelligence for music marketers</title>
+<meta name="description" content="OAK Lens reads every video your roster releases across YouTube, TikTok, and Instagram, scores momentum, and tells you what to put money behind. Built with Concord Records.">
+
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --font-sans: "Satoshi", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --brand-klein: #002FA7;
+
+  --bg-canvas:  #161311;
+  --bg-surface: #1E1A16;
+  --bg-well:    #0E0C0A;
+  --bg-hover:   #25201B;
+
+  --text-1: #F2EBE0;
+  --text-2: #A8A095;
+  --text-3: #6E665C;
+  --text-disabled: #4A433D;
+
+  --rule:        #2C2722;
+  --rule-strong: #3D362F;
+
+  --accent:        #4D7BD9;
+  --accent-hover:  #6B95E8;
+  --accent-deep:   #002FA7;
+  --accent-soft:   #1A2240;
+  --accent-on:     #F2EBE0;
+
+  --success: #34C77B;
+  --warning: #E89A48;
+  --error:   #E15553;
+
+  --series-1: var(--accent);
+  --series-2: #C49B3F;
+  --series-3: #8B5CA1;
+  --series-4: #6B7C9C;
+
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 14px;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg-canvas);
+  color: var(--text-1);
+  font-family: var(--font-sans);
+  font-size: 16px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+img, svg { display: block; max-width: 100%; }
+.num, .tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn-ikb {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 22px;
+  background: var(--accent-deep);
+  color: var(--accent-on);
+  font-weight: 600; font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-deep);
+  letter-spacing: -0.005em;
+  transition: background 160ms ease, transform 160ms ease;
+}
+.btn-ikb:hover { background: #00248A; }
+.btn-ikb .arr { font-family: var(--font-mono); font-weight: 500; }
+
+.btn-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--text-1);
+  font-size: 14px; font-weight: 500;
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 0 0 3px 0;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.btn-link:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+nav.top {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(22, 19, 17, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--rule);
+}
+nav.top .inner {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 32px;
+}
+.brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+.brand-mark {
+  width: 24px; height: 24px;
+  background: var(--accent-deep);
+  border-radius: 5px;
+  position: relative;
+}
+.brand-mark::after {
+  content: "";
+  position: absolute; inset: 7px;
+  background: var(--text-1);
+  border-radius: 50%;
+}
+nav.top .links { display: flex; align-items: center; gap: 28px; }
+nav.top .links a { font-size: 13px; color: var(--text-2); transition: color 160ms ease; }
+nav.top .links a:hover { color: var(--text-1); }
+.login {
+  padding: 8px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 7px;
+  color: var(--text-1) !important;
+  font-size: 13px;
+}
+.login:hover { background: var(--bg-hover); border-color: var(--text-3); }
+@media (max-width: 820px) {
+  nav.top .links a:not(.login) { display: none; }
+  nav.top .inner { padding: 16px 20px; }
+}
+
+/* ── Hero (asymmetric, no badge, no center-stack) ─────────── */
+.hero {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 96px 32px 80px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 72px;
+  align-items: center;
+}
+@media (max-width: 1040px) {
+  .hero { grid-template-columns: 1fr; gap: 56px; padding: 64px 20px; }
+}
+
+.hero h1 {
+  font-size: clamp(40px, 5.6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 600;
+  margin: 0 0 24px;
+  color: var(--text-1);
+}
+.hero h1 .ikb { color: var(--accent); }
+
+.hero .lede {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 50ch;
+  margin: 0 0 32px;
+}
+
+.hero .ctas {
+  display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+  margin-bottom: 44px;
+}
+
+.credit {
+  font-size: 13px;
+  color: var(--text-3);
+  border-top: 1px solid var(--rule);
+  padding-top: 22px;
+  max-width: 50ch;
+  line-height: 1.55;
+}
+.credit strong { color: var(--text-1); font-weight: 500; }
+
+/* ── Hero slab (Decision Score view, real-feeling product) ── */
+.slab {
+  background: var(--bg-surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6);
+}
+.slab-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-well);
+}
+.slab-title {
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-2); font-weight: 600;
+}
+.slab-meta {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-3);
+}
+.slab-body { padding: 4px 0; }
+
+.row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto auto auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+.row:last-child { border-bottom: 0; }
+.row .art {
+  width: 36px; height: 36px;
+  background: var(--bg-well);
+  border-radius: 4px;
+  display: grid; place-items: center;
+  color: var(--accent);
+  border: 1px solid var(--rule);
+}
+.row .art svg { width: 14px; height: 14px; }
+.row .who .name { font-size: 14px; font-weight: 500; color: var(--text-1); }
+.row .who .track { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+.row .vel {
+  font-family: var(--font-mono); font-size: 12px;
+  color: var(--success);
+}
+.row .traj { width: 16px; height: 16px; color: var(--success); }
+
+.score-chip {
+  display: inline-flex; align-items: center;
+  padding: 5px 11px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.score-chip.mid { background: var(--bg-well); color: var(--text-2); }
+.score-chip.lo  { background: var(--bg-well); color: var(--text-3); }
+
+@media (max-width: 540px) {
+  .row { grid-template-columns: 32px 1fr auto; gap: 12px; padding: 12px 14px; }
+  .row .traj, .row .vel { display: none; }
+}
+
+/* ── Module sections ──────────────────────────────────────── */
+.module {
+  padding: 112px 32px;
+  border-top: 1px solid var(--rule);
+}
+.module-inner {
+  max-width: 1240px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  gap: 80px;
+  align-items: center;
+}
+.module.flip .module-inner { grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr); }
+.module.flip .module-text { order: 2; }
+.module.flip .module-screen { order: 1; }
+@media (max-width: 1040px) {
+  .module { padding: 80px 20px; }
+  .module-inner, .module.flip .module-inner { grid-template-columns: 1fr; gap: 48px; }
+  .module.flip .module-text { order: 1; }
+  .module.flip .module-screen { order: 2; }
+}
+
+.module-text .label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 16px;
+  letter-spacing: 0.01em;
+}
+.module-text h2 {
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  margin: 0 0 20px;
+  color: var(--text-1);
+}
+.module-text p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 46ch;
+  margin: 0 0 14px;
+}
+.module-text .small {
+  font-size: 13px;
+  color: var(--text-3);
+  margin-top: 22px;
+  font-family: var(--font-mono);
+}
+
+/* ── Impact Window chart ──────────────────────────────────── */
+.chart {
+  background: var(--bg-surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.chart-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.chart-title { font-size: 14px; font-weight: 600; color: var(--text-1); }
+.chart-sub { font-size: 11px; color: var(--text-3); font-family: var(--font-mono); }
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-legend {
+  display: flex; gap: 20px; margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-2); font-family: var(--font-mono); }
+.legend-line { width: 18px; height: 2px; background: var(--accent); }
+.legend-line.spotify { background: var(--series-2); }
+.legend-line.apple { background: var(--series-3); }
+.legend-marker { width: 2px; height: 14px; background: var(--accent); }
+
+/* ── Trend Detection card ─────────────────────────────────── */
+.trend {
+  background: var(--bg-surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+.trend-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.trend-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 10px;
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+.trend-name { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+.trend-meta { font-size: 12px; color: var(--text-3); margin-bottom: 18px; font-family: var(--font-mono); }
+.trend-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 18px; }
+.trend-thumb {
+  aspect-ratio: 9 / 16;
+  background: linear-gradient(180deg, var(--bg-hover), var(--bg-well));
+  border-radius: 5px;
+  border: 1px solid var(--rule);
+  padding: 6px;
+  color: var(--text-disabled);
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+.trend-matches {
+  border-top: 1px solid var(--rule);
+  padding-top: 14px;
+}
+.trend-matches-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 10px;
+}
+.tm-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 13px;
+}
+.tm-row + .tm-row { border-top: 1px solid var(--rule); }
+.tm-row .who .t { color: var(--text-1); font-weight: 500; }
+.tm-row .who .a { color: var(--text-3); font-size: 12px; margin-top: 1px; }
+.tm-row .pct {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 12px;
+}
+.tm-row .go {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+/* ── Built-for / integrations ─────────────────────────────── */
+.builtfor {
+  padding: 112px 32px;
+  border-top: 1px solid var(--rule);
+}
+.builtfor-inner { max-width: 1240px; margin: 0 auto; }
+.builtfor h2 {
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  font-weight: 600;
+  max-width: 22ch;
+  margin: 0 0 24px;
+}
+.builtfor p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 60ch;
+  margin: 0 0 56px;
+}
+.integrations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+@media (max-width: 760px) { .integrations { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .integrations { grid-template-columns: 1fr; } }
+.integration {
+  padding: 22px 24px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.integration-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text-1);
+  margin-bottom: 6px;
+  letter-spacing: -0.005em;
+}
+.integration-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+.integration-meta .dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.integration-meta .dot.pending { background: var(--warning); }
+
+/* ── Demo CTA ─────────────────────────────────────────────── */
+.demo {
+  padding: 112px 32px;
+  border-top: 1px solid var(--rule);
+  background: var(--bg-well);
+}
+.demo-inner {
+  max-width: 1240px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 80px;
+  align-items: end;
+}
+@media (max-width: 900px) { .demo-inner { grid-template-columns: 1fr; gap: 40px; align-items: start; } }
+.demo h2 {
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 0 0 24px;
+  max-width: 18ch;
+}
+.demo h2 .ikb { color: var(--accent); }
+.demo p {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0 0 28px;
+}
+.contact-block {
+  border-left: 2px solid var(--accent-deep);
+  padding: 4px 0 4px 24px;
+}
+.contact-name { font-size: 15px; font-weight: 500; color: var(--text-1); }
+.contact-role { font-size: 13px; color: var(--text-3); margin-top: 2px; }
+.contact-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  margin-top: 12px;
+  display: block;
+}
+
+/* ── Footer (one line) ────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--rule);
+  padding: 28px 32px;
+}
+footer .fline {
+  max-width: 1240px; margin: 0 auto;
+  display: flex; gap: 24px; flex-wrap: wrap;
+  justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-3);
+  font-family: var(--font-mono);
+}
+footer a { color: var(--text-3); transition: color 160ms ease; }
+footer a:hover { color: var(--text-1); }
+footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection { background: var(--accent-deep); color: var(--text-1); }
+
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="inner">
+    <a class="brand" href="/">
+      <span class="brand-mark"></span>
+      <span>OAK Lens</span>
+    </a>
+    <div class="links">
+      <a href="#decision-score">Decision Score</a>
+      <a href="#impact-window">Impact Window</a>
+      <a href="#trends">Trend Detection</a>
+      <a href="/pricing">Pricing</a>
+      <a class="login" href="/login">Client login</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ──────────────────────────────────────────────────── -->
+<section class="hero">
+  <div>
+    <h1>Every video. Every platform. <span class="ikb">Every morning.</span></h1>
+    <p class="lede">OAK Lens reads every video your roster releases across YouTube, TikTok, and Instagram, scores momentum on a 0&ndash;100 Decision Score, and tells you what to put money behind &mdash; before the moment passes.</p>
+    <div class="ctas">
+      <a class="btn-ikb" href="#demo">Book a walkthrough <span class="arr">→</span></a>
+      <a class="btn-link" href="#decision-score">See the product</a>
+    </div>
+    <p class="credit">Built with <strong>Concord Records</strong> across a 6-artist, 600+ video catalog tracking 8.1B views. Now adapting for the agencies, managers, and labels who run a roster.</p>
+  </div>
+
+  <div class="slab" aria-label="OAK Lens — Top movers, last 24 hours">
+    <div class="slab-head">
+      <span class="slab-title">Top movers · last 24h</span>
+      <span class="slab-meta">04:12 · 600 videos</span>
+    </div>
+    <div class="slab-body">
+
+      <div class="row">
+        <div class="art"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M 6.5 5.5 L 6.5 10.5 L 11 8 Z" fill="currentColor"/></svg></div>
+        <div class="who">
+          <div class="name">Paramore</div>
+          <div class="track">This Is Why · YouTube</div>
+        </div>
+        <span class="score-chip">82</span>
+        <svg class="traj" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 3 11 L 8 5 L 13 11"/></svg>
+        <span class="vel">+421K/d</span>
+      </div>
+
+      <div class="row">
+        <div class="art"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M 6.5 5.5 L 6.5 10.5 L 11 8 Z" fill="currentColor"/></svg></div>
+        <div class="who">
+          <div class="name">Tame Impala</div>
+          <div class="track">The Less I Know The Better · TikTok</div>
+        </div>
+        <span class="score-chip">76</span>
+        <svg class="traj" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 3 11 L 8 5 L 13 11"/></svg>
+        <span class="vel">+291K/d</span>
+      </div>
+
+      <div class="row">
+        <div class="art"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M 6.5 5.5 L 6.5 10.5 L 11 8 Z" fill="currentColor"/></svg></div>
+        <div class="who">
+          <div class="name">IDLES</div>
+          <div class="track">Dancer · YouTube</div>
+        </div>
+        <span class="score-chip mid">58</span>
+        <svg class="traj" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-3)"><line x1="3" y1="8" x2="13" y2="8"/></svg>
+        <span class="vel" style="color: var(--text-3)">+44K/d</span>
+      </div>
+
+      <div class="row">
+        <div class="art"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M 6.5 5.5 L 6.5 10.5 L 11 8 Z" fill="currentColor"/></svg></div>
+        <div class="who">
+          <div class="name">Faye Webster</div>
+          <div class="track">But Not Kiss · Instagram</div>
+        </div>
+        <span class="score-chip">71</span>
+        <svg class="traj" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 3 11 L 8 5 L 13 11"/></svg>
+        <span class="vel">+118K/d</span>
+      </div>
+
+      <div class="row">
+        <div class="art"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M 6.5 5.5 L 6.5 10.5 L 11 8 Z" fill="currentColor"/></svg></div>
+        <div class="who">
+          <div class="name">Young The Giant</div>
+          <div class="track">Cough Syrup · YouTube</div>
+        </div>
+        <span class="score-chip lo">39</span>
+        <svg class="traj" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-3)"><line x1="3" y1="8" x2="13" y2="8"/></svg>
+        <span class="vel" style="color: var(--text-3)">+9K/d</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── MODULE 1: Decision Score ──────────────────────────────── -->
+<section class="module" id="decision-score">
+  <div class="module-inner">
+    <div class="module-text">
+      <div class="label">Decision Score</div>
+      <h2>One number that tells you which video to fund next.</h2>
+      <p>Every video in the catalog gets a 0&ndash;100 Decision Score updated daily — composed of view velocity, engagement quality, lifecycle stage, and platform-specific trajectory. The number isn't an estimate. It's the input to the rule that triggers spend.</p>
+      <p>Score above 70: heating. Score 40–70: holding. Below 40: falling. The rule fires when you say it does.</p>
+      <div class="small">600 videos · scored every 4 hours · WCAG-AA contrast on every chip</div>
+    </div>
+    <div class="module-screen">
+      <div class="slab">
+        <div class="slab-head">
+          <span class="slab-title">Decision Score · distribution</span>
+          <span class="slab-meta">All artists · all videos</span>
+        </div>
+        <div style="padding: 28px 24px 20px;">
+          <svg class="chart-svg" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- grid -->
+            <line x1="32" y1="40" x2="465" y2="40" stroke="#2C2722" stroke-width="1" stroke-dasharray="2 4"/>
+            <line x1="32" y1="100" x2="465" y2="100" stroke="#2C2722" stroke-width="1" stroke-dasharray="2 4"/>
+            <line x1="32" y1="160" x2="465" y2="160" stroke="#2C2722" stroke-width="1" stroke-dasharray="2 4"/>
+            <!-- bars: 0–20, 20–40, 40–60, 60–80, 80–100 -->
+            <rect x="48"  y="130" width="64" height="50"  fill="#3D362F"/>
+            <rect x="128" y="92"  width="64" height="88"  fill="#6E665C"/>
+            <rect x="208" y="58"  width="64" height="122" fill="#A8A095"/>
+            <rect x="288" y="44"  width="64" height="136" fill="#4D7BD9"/>
+            <rect x="368" y="78"  width="64" height="102" fill="#002FA7"/>
+            <!-- x-axis -->
+            <line x1="32" y1="180" x2="465" y2="180" stroke="#3D362F" stroke-width="1"/>
+            <!-- labels -->
+            <g font-family="JetBrains Mono, monospace" font-size="10" fill="#6E665C">
+              <text x="48"  y="200" text-anchor="start">0–20</text>
+              <text x="128" y="200" text-anchor="start">20–40</text>
+              <text x="208" y="200" text-anchor="start">40–60</text>
+              <text x="288" y="200" text-anchor="start">60–80</text>
+              <text x="368" y="200" text-anchor="start">80–100</text>
+            </g>
+            <g font-family="JetBrains Mono, monospace" font-size="10" fill="#6E665C">
+              <text x="24" y="44"  text-anchor="end">200</text>
+              <text x="24" y="104" text-anchor="end">100</text>
+              <text x="24" y="164" text-anchor="end">0</text>
+            </g>
+            <!-- callout -->
+            <line x1="320" y1="44" x2="320" y2="20" stroke="#4D7BD9" stroke-width="1"/>
+            <circle cx="320" cy="20" r="3" fill="#4D7BD9"/>
+            <text x="328" y="24" font-family="Satoshi, sans-serif" font-size="11" font-weight="500" fill="#F2EBE0">136 videos · the heat zone</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODULE 2: Impact Window ──────────────────────────────── -->
+<section class="module flip" id="impact-window">
+  <div class="module-inner">
+    <div class="module-text">
+      <div class="label">Impact Window</div>
+      <h2>Prove the video drove the streams.</h2>
+      <p>Every video release is auto-correlated to streaming performance on Spotify, Apple Music, and YouTube Music in a ±14-day window. The Impact Window is what you put in front of the label or the artist when they ask <em>did the video work</em>.</p>
+      <p>Because it's pulled per-ISRC and per-platform, the answer isn't anecdotal. It's an attribution chart with a release marker, a pre-release baseline, and a measured lift.</p>
+      <div class="small">Per-ISRC · per-DSP · ±14 day window</div>
+    </div>
+    <div class="module-screen">
+      <div class="chart">
+        <div class="chart-head">
+          <span class="chart-title">Tame Impala — The Less I Know The Better</span>
+          <span class="chart-sub">video posted Apr 12 · streams ±14d</span>
+        </div>
+        <svg class="chart-svg" viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="spotifyFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C49B3F" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#C49B3F" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="appleFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#8B5CA1" stop-opacity="0.14"/>
+              <stop offset="100%" stop-color="#8B5CA1" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- grid -->
+          <g stroke="#2C2722" stroke-width="1" stroke-dasharray="2 4">
+            <line x1="40" y1="40"  x2="540" y2="40"/>
+            <line x1="40" y1="100" x2="540" y2="100"/>
+            <line x1="40" y1="160" x2="540" y2="160"/>
+          </g>
+          <!-- pre-release baseline shading (subtle) -->
+          <rect x="40" y="40" width="240" height="160" fill="#F2EBE0" fill-opacity="0.015"/>
+          <!-- release marker — IKB -->
+          <line x1="280" y1="36" x2="280" y2="200" stroke="#4D7BD9" stroke-width="1.5"/>
+          <text x="284" y="48" font-family="JetBrains Mono, monospace" font-size="10" fill="#4D7BD9">video posted</text>
+          <!-- spotify area + line -->
+          <path d="M 40 150 L 80 152 L 120 148 L 160 150 L 200 149 L 240 151 L 280 148 L 320 120 L 360 92 L 400 78 L 440 70 L 480 64 L 520 60 L 540 58 L 540 200 L 40 200 Z" fill="url(#spotifyFill)"/>
+          <path d="M 40 150 L 80 152 L 120 148 L 160 150 L 200 149 L 240 151 L 280 148 L 320 120 L 360 92 L 400 78 L 440 70 L 480 64 L 520 60 L 540 58" fill="none" stroke="#C49B3F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- apple line (subtler bump) -->
+          <path d="M 40 170 L 80 168 L 120 172 L 160 170 L 200 171 L 240 169 L 280 170 L 320 156 L 360 140 L 400 128 L 440 120 L 480 112 L 520 108 L 540 106 L 540 200 L 40 200 Z" fill="url(#appleFill)"/>
+          <path d="M 40 170 L 80 168 L 120 172 L 160 170 L 200 171 L 240 169 L 280 170 L 320 156 L 360 140 L 400 128 L 440 120 L 480 112 L 520 108 L 540 106" fill="none" stroke="#8B5CA1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- x-axis labels -->
+          <g font-family="JetBrains Mono, monospace" font-size="10" fill="#6E665C">
+            <text x="40"  y="218" text-anchor="start">−14</text>
+            <text x="160" y="218" text-anchor="start">−7</text>
+            <text x="280" y="218" text-anchor="start">0</text>
+            <text x="400" y="218" text-anchor="start">+7</text>
+            <text x="528" y="218" text-anchor="start">+14</text>
+          </g>
+          <!-- lift annotation -->
+          <line x1="440" y1="66" x2="468" y2="46" stroke="#A8A095" stroke-width="1"/>
+          <text x="472" y="44" font-family="Satoshi, sans-serif" font-size="11" font-weight="600" fill="#F2EBE0">+62%</text>
+          <text x="472" y="58" font-family="JetBrains Mono, monospace" font-size="10" fill="#A8A095">vs baseline</text>
+        </svg>
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-marker"></span>Video posted</div>
+          <div class="legend-item"><span class="legend-line spotify"></span>Spotify daily streams</div>
+          <div class="legend-item"><span class="legend-line apple"></span>Apple Music daily streams</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MODULE 3: Trend Detection ─────────────────────────────── -->
+<section class="module" id="trends">
+  <div class="module-inner">
+    <div class="module-text">
+      <div class="label">Trend Detection</div>
+      <h2>Catch the catalog moment before someone else does.</h2>
+      <p>OAK Lens watches what's moving on TikTok and Instagram, matches it against your roster's catalog by audio, lyric, and theme, and ships a creative brief to your team the same morning the trend lands.</p>
+      <p>The brief comes with the trend evidence, the matched tracks, the suggested format, and a target spend if you want it. Your publicist has it in their inbox in time to pitch.</p>
+      <div class="small">Cross-platform · audio + theme matching · brief in 4 hours</div>
+    </div>
+    <div class="module-screen">
+      <div class="trend">
+        <div class="trend-head">
+          <span class="trend-pill"><span class="pulse"></span>Trend detected</span>
+          <span class="trend-meta">TikTok · 2.3M videos · last 72h</span>
+        </div>
+        <div class="trend-name">"sped-up dreamcore"</div>
+        <div class="trend-meta">Pitched-up nostalgia loops over washed pads. Skews 16–24, female-leaning, US/UK.</div>
+        <div class="trend-grid">
+          <div class="trend-thumb">9:16</div>
+          <div class="trend-thumb">9:16</div>
+          <div class="trend-thumb">9:16</div>
+          <div class="trend-thumb">9:16</div>
+        </div>
+        <div class="trend-matches">
+          <div class="trend-matches-label">3 catalog matches</div>
+          <div class="tm-row">
+            <div class="who">
+              <div class="t">But Not Kiss</div>
+              <div class="a">Faye Webster</div>
+            </div>
+            <span class="pct">94% match</span>
+            <span class="go">Brief →</span>
+          </div>
+          <div class="tm-row">
+            <div class="who">
+              <div class="t">Lost in Yesterday</div>
+              <div class="a">Tame Impala</div>
+            </div>
+            <span class="pct">81% match</span>
+            <span class="go">Brief →</span>
+          </div>
+          <div class="tm-row">
+            <div class="who">
+              <div class="t">Decode</div>
+              <div class="a">Paramore</div>
+            </div>
+            <span class="pct">72% match</span>
+            <span class="go">Brief →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── BUILT FOR ─────────────────────────────────────────────── -->
+<section class="builtfor" id="built-for">
+  <div class="builtfor-inner">
+    <h2>Built for the people who run rosters.</h2>
+    <p>OAK Lens was built inside Concord Records and stress-tested across a 6-artist, 600+ video catalog. The same engine is now adapting for agencies, managers, and labels that work across many clients with information walls between them, separate ad accounts, and reports that need to ship under your brand, not ours.</p>
+
+    <div class="integrations">
+      <div class="integration">
+        <div class="integration-name">YouTube</div>
+        <div class="integration-meta"><span class="dot"></span>Data API v3 · authorized</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">TikTok</div>
+        <div class="integration-meta"><span class="dot"></span>Display + Marketing API</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Instagram</div>
+        <div class="integration-meta"><span class="dot"></span>Graph API · authorized</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Spotify</div>
+        <div class="integration-meta"><span class="dot"></span>Web API · per-ISRC</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Apple Music</div>
+        <div class="integration-meta"><span class="dot"></span>MusicKit · per-ISRC</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Shazam</div>
+        <div class="integration-meta"><span class="dot"></span>Discovery API</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Meta Ads</div>
+        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">Google Ads</div>
+        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
+      </div>
+      <div class="integration">
+        <div class="integration-name">TikTok Ads</div>
+        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DEMO ──────────────────────────────────────────────────── -->
+<section class="demo" id="demo">
+  <div class="demo-inner">
+    <div>
+      <h2>See it on <span class="ikb">your roster</span>.</h2>
+      <p>Send us two artists from your catalog — one big, one developing. We'll wire them into a private OAK Lens workspace, run the engine, and walk you through Decision Score, Impact Window, and Trend Detection on your actual data inside a single 30-minute session.</p>
+      <a class="btn-ikb" href="mailto:tim@oaklens.io?subject=OAK%20Lens%20walkthrough">Book a walkthrough <span class="arr">→</span></a>
+    </div>
+    <div class="contact-block">
+      <div class="contact-name">Tim Lerkin</div>
+      <div class="contact-role">Co-founder, Oak Media Works</div>
+      <a class="contact-link" href="mailto:tim@oaklens.io">tim@oaklens.io</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="fline">
+    <span>OAK Lens · by Oak Media Works · © 2026</span>
+    <span class="links">
+      <a href="/login">Client login</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="mailto:tim@oaklens.io">tim@oaklens.io</a>
+    </span>
+  </div>
+</footer>
+
+</body>
+</html>
