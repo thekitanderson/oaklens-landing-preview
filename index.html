@@ -109,16 +109,9 @@ nav.top .inner {
 }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
 .brand-mark {
-  width: 24px; height: 24px;
-  background: var(--accent-deep);
-  border-radius: 5px;
-  position: relative;
-}
-.brand-mark::after {
-  content: "";
-  position: absolute; inset: 7px;
-  background: var(--text-1);
-  border-radius: 50%;
+  width: 28px; height: 28px;
+  display: block;
+  object-fit: contain;
 }
 nav.top .links { display: flex; align-items: center; gap: 28px; }
 nav.top .links a { font-size: 13px; color: var(--text-2); transition: color 160ms ease; }
@@ -528,7 +521,7 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
 <nav class="top">
   <div class="inner">
     <a class="brand" href="/">
-      <span class="brand-mark"></span>
+      <img class="brand-mark" src="https://oaklens.io/logo.png" alt="">
       <span>OAK Lens</span>
     </a>
     <div class="links">
@@ -544,13 +537,8 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
 <!-- ── HERO ──────────────────────────────────────────────────── -->
 <section class="hero">
   <div>
-    <h1>Every video. Every platform. <span class="ikb">Every morning.</span></h1>
-    <p class="lede">OAK Lens reads every video your roster releases across YouTube, TikTok, and Instagram, scores momentum on a 0&ndash;100 Decision Score, and tells you what to put money behind &mdash; before the moment passes.</p>
-    <div class="ctas">
-      <a class="btn-ikb" href="#demo">Book a walkthrough <span class="arr">→</span></a>
-      <a class="btn-link" href="#decision-score">See the product</a>
-    </div>
-    <p class="credit">8.1B+ views and 600+ videos under continuous analysis. The platform record labels, agencies, and managers use to run a roster.</p>
+    <h1>Every video. Every platform. Every morning.</h1>
+    <p class="lede">Continuous video and streaming intelligence for music catalogs.</p>
   </div>
 
   <div class="slab" aria-label="OAK Lens — Top movers, last 24 hours">
@@ -624,10 +612,7 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   <div class="module-inner">
     <div class="module-text">
       <div class="label">Decision Score</div>
-      <h2>One number that tells you which video to fund next.</h2>
-      <p>Every video in the catalog gets a 0&ndash;100 Decision Score updated daily — composed of view velocity, engagement quality, lifecycle stage, and platform-specific trajectory. The number isn't an estimate. It's the input to the rule that triggers spend.</p>
-      <p>Score above 70: heating. Score 40–70: holding. Below 40: falling. The rule fires when you say it does.</p>
-      <div class="small">600 videos · scored every 4 hours · WCAG-AA contrast on every chip</div>
+      <p>Composite of view velocity, engagement quality, lifecycle stage, and platform-specific trajectory. 0&ndash;100, recomputed every four hours. 70+ heating, 40&ndash;70 holding, below 40 falling.</p>
     </div>
     <div class="module-screen">
       <div class="slab">
@@ -678,10 +663,7 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   <div class="module-inner">
     <div class="module-text">
       <div class="label">Impact Window</div>
-      <h2>Prove the video drove the streams.</h2>
-      <p>Every video release is auto-correlated to streaming performance on Spotify, Apple Music, and YouTube Music in a ±14-day window. The Impact Window is what you put in front of the label or the artist when they ask <em>did the video work</em>.</p>
-      <p>Because it's pulled per-ISRC and per-platform, the answer isn't anecdotal. It's an attribution chart with a release marker, a pre-release baseline, and a measured lift.</p>
-      <div class="small">Per-ISRC · per-DSP · ±14 day window</div>
+      <p>Each release auto&#8209;correlated to streaming on Spotify, Apple Music, and YouTube Music. &plusmn;14&#8209;day window, per&#8209;ISRC, per&#8209;DSP. Release marker, pre&#8209;release baseline, measured lift.</p>
     </div>
     <div class="module-screen">
       <div class="chart">
@@ -745,10 +727,7 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   <div class="module-inner">
     <div class="module-text">
       <div class="label">Trend Detection</div>
-      <h2>Catch the catalog moment before someone else does.</h2>
-      <p>OAK Lens watches what's moving on TikTok and Instagram, matches it against your roster's catalog by audio, lyric, and theme, and ships a creative brief to your team the same morning the trend lands.</p>
-      <p>The brief comes with the trend evidence, the matched tracks, the suggested format, and a target spend if you want it. Your publicist has it in their inbox in time to pitch.</p>
-      <div class="small">Cross-platform · audio + theme matching · brief in 4 hours</div>
+      <p>Audio, lyric, and theme matching from TikTok and Instagram trends to the catalog. Briefs land within four hours: trend evidence, matched tracks, suggested format, target spend.</p>
     </div>
     <div class="module-screen">
       <div class="trend">
@@ -796,79 +775,12 @@ footer .links { display: flex; gap: 18px; flex-wrap: wrap; }
   </div>
 </section>
 
-<!-- ── BUILT FOR ─────────────────────────────────────────────── -->
-<section class="builtfor" id="built-for">
-  <div class="builtfor-inner">
-    <h2>Built for the people who run rosters.</h2>
-    <p>OAK Lens was built inside Concord Records and stress-tested across a 6-artist, 600+ video catalog. The same engine is now adapting for agencies, managers, and labels that work across many clients with information walls between them, separate ad accounts, and reports that need to ship under your brand, not ours.</p>
-
-    <div class="integrations">
-      <div class="integration">
-        <div class="integration-name">YouTube</div>
-        <div class="integration-meta"><span class="dot"></span>Data API v3 · authorized</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">TikTok</div>
-        <div class="integration-meta"><span class="dot"></span>Display + Marketing API</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Instagram</div>
-        <div class="integration-meta"><span class="dot"></span>Graph API · authorized</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Spotify</div>
-        <div class="integration-meta"><span class="dot"></span>Web API · per-ISRC</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Apple Music</div>
-        <div class="integration-meta"><span class="dot"></span>MusicKit · per-ISRC</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Shazam</div>
-        <div class="integration-meta"><span class="dot"></span>Discovery API</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Meta Ads</div>
-        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">Google Ads</div>
-        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
-      </div>
-      <div class="integration">
-        <div class="integration-name">TikTok Ads</div>
-        <div class="integration-meta"><span class="dot pending"></span>Per-tenant OAuth</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── DEMO ──────────────────────────────────────────────────── -->
-<section class="demo" id="demo">
-  <div class="demo-inner">
-    <div>
-      <h2>See it on <span class="ikb">your roster</span>.</h2>
-      <p>Send us two artists from your catalog — one big, one developing. We'll wire them into a private OAK Lens workspace, run the engine, and walk you through Decision Score, Impact Window, and Trend Detection on your actual data inside a single 30-minute session.</p>
-      <a class="btn-ikb" href="mailto:tim@oaklens.io?subject=OAK%20Lens%20walkthrough">Book a walkthrough <span class="arr">→</span></a>
-    </div>
-    <div class="contact-block">
-      <div class="contact-name">Tim Lerkin</div>
-      <div class="contact-role">Co-founder, Oak Media Works</div>
-      <a class="contact-link" href="mailto:tim@oaklens.io">tim@oaklens.io</a>
-    </div>
-  </div>
-</section>
-
 <!-- ── FOOTER ────────────────────────────────────────────────── -->
 <footer>
   <div class="fline">
     <span>OAK Lens · by Oak Media Works · © 2026</span>
     <span class="links">
       <a href="/login">Client login</a>
-      <a href="/pricing">Pricing</a>
-      <a href="/privacy">Privacy</a>
-      <a href="/terms">Terms</a>
-      <a href="mailto:tim@oaklens.io">tim@oaklens.io</a>
     </span>
   </div>
 </footer>
